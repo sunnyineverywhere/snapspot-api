@@ -1,8 +1,1 @@
-rootProject.name = 'snap'
-
-include 'snapspot-api'
-include 'snapspot-common'
-include 'snapspot-domain'
-include 'snapspot-admin'
-include 'snapspot-mail'
-include 'snapspot-batch'
+rootProject.name = 'snapspot-api'
