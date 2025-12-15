@@ -23,20 +23,4 @@ public class WebConfig implements WebMvcConfigurer {
         argumentResolvers.add(authMemberArgumentResolver);
         argumentResolvers.add(authPhotographerArgumentResolver);
     }
-
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000")
-                .allowedOrigins("https://snapspot.co.kr")
-                .allowedOrigins("https://www.snapspot.co.kr")
-                .allowedMethods(HttpMethod.GET.name())
-                .allowedMethods(HttpMethod.POST.name())
-                .allowedMethods(HttpMethod.PUT.name())
-                .allowedMethods(HttpMethod.DELETE.name())
-                .allowedHeaders("Authorization")
-                .allowedHeaders("refresh-token")
-                .allowedHeaders("*")
-                .allowCredentials(true);
-    }
 }

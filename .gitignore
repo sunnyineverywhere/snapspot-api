@@ -11,22 +11,19 @@ build/
 *.bin
 *.jar
 *.probe
-*.yml
-*.properties
 *.uniqueId0
 *.uniqueId1
 *.uniqueId2
 *.uniqueId3
 
-snapspot-domain/build/
-snapspot-api/build/
-snapspot-admin/build/
-snapspot-common/build/
+# Application properties (track template only)
+/src/main/resources/application-local.yml
+/src/main/resources/application-dev.yml
+/src/main/resources/application-prod.yml
+*.properties
 
-snapspot-domain/src/main/resources/*.yml
+# Environment variables
+.env
 
-snapspot-admin/src/main/resources/*.yml
-
-snapspot-api/src/main/resources/*.yml
-
-snapspot-common/src/main/resources/*.yml
+# H2 Database files
+/data/

@@ -1,0 +1,103 @@
+spring:
+  application:
+    name: snapspot-api
+
+  # JPA/Hibernate 공통 설정
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+    open-in-view: false
+
+  # Batch 설정
+  batch:
+    job:
+      enabled: false
+    jdbc:
+      initialize-schema: always
+
+  # Redis 설정
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+
+  # Mail 설정
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+
+  # JWT 설정
+  jwt:
+    secret-key: ${JWT_SECRET:c25hcHNwb3Qtand0LXNlY3JldC1rZXktZm9yLWRldmVsb3BtZW50LXB1cnBvc2Utb25seS1wbGVhc2UtY2hhbmdlLWluLXByb2R1Y3Rpb24=}
+
+# Kakao OAuth 설정
+kakao:
+  url: ${KAKAO_REDIRECT_URL:http://localhost:8080/api/auth/kakao/callback}
+  apiurl: https://dapi.kakao.com/v2
+  clientId: ${KAKAO_CLIENT_ID:}
+  clientSecret: ${KAKAO_CLIENT_SECRET:}
+
+# Mail 발신자 주소
+mail:
+  from-address: snapspot.efub@gmail.com
+
+# CORS 설정
+cors:
+  allowed-origins: http://localhost:3000,https://snapspot.co.kr,https://www.snapspot.co.kr
+  allowed-methods: GET,POST,PUT,DELETE,PATCH,OPTIONS
+  allowed-headers: "*"
+  allow-credentials: true
+  max-age: 3600
+
+# Batch Scheduler 설정
+batch:
+  scheduler:
+    cron: "0 51 19 * * *"  # 매일 오후 7시 51분
+
+# Swagger/OpenAPI 설정
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /api-docs
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+
+# Logging 설정
+logging:
+  level:
+    root: INFO
+    snap: INFO
+    org.springframework.web: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+# Server 설정
+server:
+  port: ${SERVER_PORT:8080}
+  servlet:
+    context-path: /
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true

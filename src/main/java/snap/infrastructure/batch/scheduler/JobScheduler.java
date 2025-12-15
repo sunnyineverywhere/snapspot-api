@@ -1,9 +1,9 @@
 package snap.infrastructure.batch.scheduler;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import snap.infrastructure.batch.job.JobConfiguration;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.JobParameter;
 import org.springframework.batch.core.JobParameters;
@@ -13,7 +13,6 @@ import org.springframework.batch.core.repository.JobExecutionAlreadyRunningExcep
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +24,7 @@ public class JobScheduler {
     private final JobLauncher jobLauncher;
     private final JobConfiguration jobConfiguration;
 
-    @Scheduled(cron = "0 51 19 * * *")
+    @Scheduled(cron = "${batch.scheduler.cron}")
     public void runJob() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
         Map<String, JobParameter> confMap = new HashMap<>();
         log.info("start job");
