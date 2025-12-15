@@ -1,0 +1,50 @@
+package snap.photographer.dto.response;
+
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import snap.member.dto.MemberResponseDto;
+import snap.review.dto.PhotographerReviewResponseDto;
+import snap.spot.dto.AreaResponseDto;
+import snap.photographer.entity.Photographer;
+import snap.photographer.entity.PhotographerArea;
+import snap.photographer.entity.PhotographerTag;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class PhotographerResponseDto {
+    private MemberResponseDto member;
+    private Long photographerId;
+    private Long lowestPay;
+    private String paymentImage;
+    private String bio;
+    private ImageUrlsDto images;
+    private List<AreaResponseDto> areas;
+    private UnableSchedulesDto unableSchedules;
+    private SnsDto sns;
+    private SpecialListDto specialList;
+    private TagsDto tags;
+    private PhotographerReviewResponseDto review;
+
+    @Builder
+    public PhotographerResponseDto(Photographer entity, PhotographerReviewResponseDto review) {
+        this.member = new MemberResponseDto(entity.getMember());
+        this.photographerId = entity.getPhotographerId();
+        this.lowestPay = entity.getLowestPay();
+        this.paymentImage = entity.getPaymentImage();
+        this.bio = entity.getBio();
+        this.images = new ImageUrlsDto(entity.getImages());
+        this.areas = entity.getAreas().stream().map(PhotographerArea::getArea)
+                .map(AreaResponseDto::new)
+                .collect(Collectors.toList());
+        this.unableSchedules = new UnableSchedulesDto(entity.getUnableSchedules());
+        this.sns = new SnsDto(entity.getSns());
+        this.specialList = new SpecialListDto(entity.getSpecialList());
+        this.tags = new TagsDto(entity.getTags());
+        this.review = review;
+    }
+}

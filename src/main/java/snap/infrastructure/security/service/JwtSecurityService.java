@@ -1,0 +1,73 @@
+package snap.infrastructure.security.service;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import snap.member.entity.Member;
+import snap.member.service.MemberDomainService;
+import snap.infrastructure.security.dto.MemberRes;
+import snap.infrastructure.security.dto.TokenRes;
+import snap.common.enums.Role;
+import snap.infrastructure.security.jwt.JwtTokenUtil;
+import snap.infrastructure.redis.RedisService;
+
+import java.time.Duration;
+
+import javax.servlet.http.HttpServletRequest;
+
+@Service
+@RequiredArgsConstructor
+public class JwtSecurityService {
+    private final JwtTokenUtil jwtUtil;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final PasswordEncoder passwordEncoder;
+    private final RedisService redisService;
+    private final MemberDomainService memberDomainService;
+
+    public TokenRes createJwt(String email, String password) {
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, password);
+        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        TokenRes tokenRes = jwtUtil.generateToken(authentication);
+        setRefreshToken(email, tokenRes.getRefreshToken());
+        return tokenRes;
+    }
+
+    public TokenRes createJwtOfKakaoMember(String email, Role role) {
+        TokenRes tokenRes = jwtUtil.generateTokenForKakao(email, role);
+        setRefreshToken(email, tokenRes.getRefreshToken());
+        return tokenRes;
+    }
+
+    public String getEmailFromToken(String token) {
+        return jwtUtil.getEmail(token);
+    }
+
+    public void setRefreshToken(String email, String refreshToken) {
+        redisService.setValues(refreshToken, email, Duration.ofDays(31));
+    }
+
+    public TokenRes reissueJwt(Member member, String refreshToken) {
+        return jwtUtil.reissueToken(member.getEmail(), member.getRole(), refreshToken);
+    }
+
+    public Boolean validateRefreshToken(Member member, String refreshToken) {
+        if (!jwtUtil.validateToken(refreshToken)) {
+            return false;
+        }
+        return redisService.getValues(refreshToken).equals(member.getEmail());
+    }
+
+    public String encryptPassword(String password) {
+        return passwordEncoder.encode(password);
+    }
+
+    public MemberRes getMemberByRequest(HttpServletRequest request){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return new MemberRes(memberDomainService.findMemberByEmail(authentication.getName())
+            .orElseGet(() -> null));
+    }
+}

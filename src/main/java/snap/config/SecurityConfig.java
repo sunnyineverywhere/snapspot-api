@@ -12,8 +12,8 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import snap.jwt.JwtTokenUtil;
-import snap.response.ExceptionHandlerFilter;
+import snap.infrastructure.security.jwt.JwtTokenUtil;
+import snap.infrastructure.security.filter.ExceptionHandlerFilter;
 
 @Configuration
 @EnableWebSecurity

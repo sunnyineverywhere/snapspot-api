@@ -6,8 +6,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import snap.resolver.AuthMemberArgumentResolver;
-import snap.resolver.AuthPhotographerArgumentResolver;
+import snap.infrastructure.security.resolver.AuthMemberArgumentResolver;
+import snap.infrastructure.security.resolver.AuthPhotographerArgumentResolver;
 
 import java.util.List;
 
