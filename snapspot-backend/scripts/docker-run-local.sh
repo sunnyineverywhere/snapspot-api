@@ -13,7 +13,7 @@ IMAGE_NAME="snapspot-backend:local"
 CONTAINER_NAME="snapspot-backend-local"
 
 echo "🔨 Docker 이미지 빌드 중..."
-docker build -f docker/Dockerfile.local -t "$IMAGE_NAME" .
+docker build --no-cache -f docker/Dockerfile.local -t "$IMAGE_NAME" .
 
 # 기존 컨테이너가 실행 중이면 중지 및 삭제
 if [ "$(docker ps -q -f name=$CONTAINER_NAME)" ]; then

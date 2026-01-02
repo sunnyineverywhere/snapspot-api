@@ -16,11 +16,12 @@ RUN ./gradlew dependencies --no-daemon || true
 # 소스 코드 복사
 COPY src ./src
 
-# 애플리케이션 빌드
-RUN ./gradlew build -x test --no-daemon
+# 애플리케이션 빌드 (JAVA_HOME을 사용하여 toolchain 우회)
+ENV JAVA_HOME=/opt/java/openjdk
+RUN ./gradlew build -x test --no-daemon -Dorg.gradle.java.home=$JAVA_HOME
 
 # 실행 단계
-FROM eclipse-temurin:21-jre-alpine
+FROM eclipse-temurin:21-jre
 
 WORKDIR /app
 
