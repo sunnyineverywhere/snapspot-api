@@ -1,4 +1,4 @@
-package xyz.snapsnpot
+package xyz.snapspot
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest

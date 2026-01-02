@@ -1,4 +1,4 @@
-package xyz.snapsnpot
+package xyz.snapspot
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
