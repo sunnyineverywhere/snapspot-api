@@ -24,6 +24,9 @@ FROM eclipse-temurin:21-jre-alpine
 
 WORKDIR /app
 
+# logs 디렉토리 생성
+RUN mkdir -p logs
+
 # 빌드된 JAR 파일 복사
 COPY --from=builder /app/build/libs/*.jar app.jar
 
